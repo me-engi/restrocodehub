@@ -9,6 +9,17 @@ abstract class Routes {
   static const SIGNUP_TENANT = _Paths.SIGNUP_TENANT;
   static const HOME = _Paths.HOME;
   static const RESTAURANT_MENU = _Paths.RESTAURANT_MENU;
+  // ...
+static const CART = '/cart';
+static const CHECKOUT = '/checkout'; // For OrderPlacementController
+static const ORDER_HISTORY = '/order-history';
+static const ORDER_DETAIL = '/order-detail'; // Could be /orders/:id
+static const ORDER_CONFIRMATION = '/order-confirmation';
+// ...
+static const PAYMENT_SCREEN = '/payment';
+// ...
+
+// ...
 }
 
 abstract class _Paths {
@@ -18,5 +29,15 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const SIGNUP_TENANT = '/signup-tenant';
   static const HOME = '/home';
-  static const RESTAURANT_MENU = '/restaurant-menu'; // Example, could be /restaurants/:id/menu
+  static const RESTAURANT_MENU = '/restaurant-menu';
+  // ...
+static const CART = '/cart';
+static const CHECKOUT = '/checkout'; // For OrderPlacementController
+static const ORDER_HISTORY = '/order-history';
+static const ORDER_DETAIL = '/order-detail'; // Could be /orders/:id
+static const ORDER_CONFIRMATION = '/order-confirmation';
+// ...
+static const PAYMENT_SCREEN = '/payment';
+// ...
+// ... // Example, could be /restaurants/:id/menu
 }
