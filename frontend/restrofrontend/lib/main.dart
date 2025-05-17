@@ -1,122 +1,127 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+import 'app/routes/app_pages.dart';
+import 'app/app_binding.dart'; // Import your global AppBinding
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init(); // Initialize GetStorage for synchronous use later
+
+  // No need to determine initialRoute here if MyApp handles GetMaterialApp's initialRoute
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return GetMaterialApp(
+      title: "Culinary AI Concierge",
+      initialRoute: AppPages.INITIAL, // Start with the Splash screen route
+      getPages: AppPages.routes,
+      initialBinding: AppBinding(), // Load global dependencies first
+      debugShowCheckedModeBanner: false, // Set to true if you want the debug banner
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+        // primarySwatch: Colors.teal, // primarySwatch is less used with ColorScheme
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.teal,
+          // You can customize other colors of the scheme here if needed:
+          // primary: Colors.teal,
+          // secondary: Colors.amber,
+          // background: Colors.white,
+          // surface: Colors.grey[50],
+          // error: Colors.red,
+        ),
+        useMaterial3: true, // Enable Material 3 theming
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+        // Consistent Input Decoration Theme
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0), // Slightly more rounded
+            borderSide: BorderSide(color: Colors.grey.shade400),
+          ),
+          enabledBorder: OutlineInputBorder( // Border when not focused
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide(color: Colors.grey.shade400),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide(color: Get.theme.colorScheme.primary, width: 2.0), // Use primary from ColorScheme
+          ),
+          labelStyle: TextStyle(color: Colors.grey.shade700),
+          floatingLabelStyle: TextStyle(color: Get.theme.colorScheme.primary),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        ),
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+        // Consistent ElevatedButton Theme
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Get.theme.colorScheme.primary, // Use primary from ColorScheme
+            foregroundColor: Get.theme.colorScheme.onPrimary, // Text color on primary
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+            textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 0.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0), // Consistent rounding
             ),
-          ],
+            elevation: 2,
+          ),
+        ),
+
+        // Consistent TextButton Theme
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: Get.theme.colorScheme.primary, // Text color
+            textStyle: const TextStyle(fontWeight: FontWeight.w600),
+          )
+        ),
+
+        // Consistent AppBar Theme
+        appBarTheme: AppBarTheme(
+          backgroundColor: Get.theme.colorScheme.surface, // Or primary for a colored AppBar
+          foregroundColor: Get.theme.colorScheme.onSurface, // Text/icon color on surface
+          elevation: 1, // Subtle shadow
+          titleTextStyle: TextStyle(
+            color: Get.theme.colorScheme.onSurface,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+          iconTheme: IconThemeData(color: Get.theme.colorScheme.onSurface),
+        ),
+
+        // Consistent Card Theme
+        cardTheme: CardTheme(
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0), // Consistent rounding
+          ),
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        ),
+
+        // Define other theme properties: textTheme, etc.
+        textTheme: TextTheme(
+          // Define headline, title, body styles etc.
+          // Example:
+          headlineSmall: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Get.theme.colorScheme.onSurface),
+          titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Get.theme.colorScheme.onSurface),
+          bodyMedium: TextStyle(fontSize: 14, color: Get.theme.colorScheme.onSurface.withOpacity(0.8)),
+          labelLarge: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white), // For button text if needed
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // You can also define darkTheme: ThemeData.dark().copyWith(...)
+      // darkTheme: ThemeData(
+      //   colorScheme: ColorScheme.fromSeed(
+      //     seedColor: Colors.teal,
+      //     brightness: Brightness.dark,
+      //     // Define dark theme specific colors
+      //   ),
+      //   useMaterial3: true,
+      //   // ... other dark theme properties ...
+      // ),
+      // themeMode: ThemeMode.system, // Or ThemeMode.light, ThemeMode.dark
     );
   }
 }
